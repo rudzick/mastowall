@@ -440,7 +440,13 @@ const animatePostsToPeople = async function() {
         // Simple crossfade without animation
         $('#app-content').fadeOut(200);
         renderPeopleList();
+        // Remove is-hidden class from all people items since we're not animating
+        $('#people-container').removeClass('d-none');
+        $('#people-container .people-item').removeClass('is-hidden');
+        $('#people-container .people-item .people-avatar').css({ visibility: 'visible' });
         $('#people-container').fadeIn(200);
+        // Load follow statuses
+        prefetchFollowStatuses().catch(() => {});
         return;
     }
 
@@ -881,7 +887,7 @@ $(document).ready(async function() {
         updateButtonStates();
         $('#people-container').addClass('d-none');
         $('#zero-state').addClass('d-none');
-        $('#app-content').removeClass('d-none');
+        $('#app-content').removeClass('d-none').css('display', '');
         updateUrlForView('posts');
     });
 
